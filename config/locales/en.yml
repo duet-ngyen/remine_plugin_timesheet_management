@@ -1,0 +1,29 @@
+# English strings go here for Rails i18n
+en:
+  plg_mng_timesheets:
+    approved: Approved
+    rejected: Rejected
+    not_reviewed: Not reviewed
+    approved_successfully: Approved successfully
+    approve_not_successfully: Approve failure
+    rejected_successfully: Rejected successfully
+    reject_not_successful: Rejected failure
+    timesheet_destroy_successfully: Timesheet was destroyed successfully.
+    statistics: Statistics
+    filters: Filters
+    submit: Submit
+    please_select: Please select
+    approve: Approve
+    timesheet_management: TimeSheet Management
+    timesheets: Timesheets
+    hours: Hours
+    total: Total
+    date: Date
+    user: User
+    activity: Activity
+    issue: Issue
+    comment: Comment
+    hours: Hours
+    reviewing_status: Reviewing Status
+    reason: Reason
+    no_data: No data to display

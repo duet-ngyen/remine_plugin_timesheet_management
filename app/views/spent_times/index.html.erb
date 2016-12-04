@@ -1,0 +1,27 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'spent_time', plugin: 'redmine_timesheet_management' %>
+  <%= stylesheet_link_tag 'spent_time', :plugin => 'redmine_timesheet_management' %>
+<% end %>
+
+<h2><%= t "plg_mng_timesheets.timesheet_management" %></h2>
+
+<%= render "filter_form" %>
+
+<%= render "statistics" %>
+
+<div style="margin-top: 20px"></div>
+<%= form_tag approve_multiple_project_spent_times_path(@project), method: :put do %>
+  <% if @spent_times.present? %>
+    <% if SpentTime.check_permission(User.current, @project.id, :review_time_sheets) %>
+      <%= submit_tag t("plg_mng_timesheets.approve"), class: "icon icon-checked" %>
+    <% end %>
+    <br>
+    <%= render "time_entries", spent_times: @spent_times %>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+  $(".filter").click(function(){
+    $(".open-filter").val(true);
+  });
+</script>

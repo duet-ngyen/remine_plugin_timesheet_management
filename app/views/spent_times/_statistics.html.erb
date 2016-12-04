@@ -1,0 +1,38 @@
+<fieldset id="filters" class="collapsible collapsed">
+  <legend onclick="toggleFieldset(this);"><%= t("plg_mng_timesheets.statistics") %></legend>
+  <div style="display: none;" >
+    <table class="report-timesheets">
+      <thead>
+        <td></td>
+        <td class="value-report"><%= t "plg_mng_timesheets.timesheets" %></td>
+        <td class="value-report"><%= t "plg_mng_timesheets.hours" %></td>
+      </thead>
+        <tbody>
+        <tr class="">
+          <td class=""><%= t "plg_mng_timesheets.approved" %></td>
+          <td class="value-report"><%= @time_sheet_approved.size %></td>
+          <td class="value-report"><%= @time_sheet_approved.map(&:hours).inject(0){|sum, h| sum + h} %></td>
+        </tr>
+
+        <tr class="total">
+          <td class=""><%= t "plg_mng_timesheets.rejected" %></td>
+          <td class="value-report"><%= @time_sheet_rejected.size %></td>
+          <td class="value-report"><%= @time_sheet_rejected.map(&:hours).inject(0){|sum, h| sum + h} %>
+        </tr>
+
+        <tr class="">
+          <td class=""><%= t "plg_mng_timesheets.not_reviewed" %></td>
+          <td class="value-report"><%= @time_sheet_not_reviewed.size %></td>
+          <td class="value-report"><%= @time_sheet_not_reviewed.map(&:hours).inject(0){|sum, h| sum + h} %>
+        </tr>
+
+        <tr class="total">
+          <td class=""><%= t("plg_mng_timesheets.total") %></td>
+          <td class="value-report"><%= @project.time_entries.size %></td>
+          <td class="value-report"><%= @project.time_entries.map(&:hours).inject(0){|sum, h| sum + h} %>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</fieldset>

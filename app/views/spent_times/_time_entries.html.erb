@@ -1,0 +1,101 @@
+<table class="list time-entries" id="timesheet-management">
+<thead>
+  <tr>
+    <% if SpentTime.check_permission(User.current, @project.id, :review_time_sheets) %>
+      <th class="check-box-approve">
+        <input class="select-all-checkbox" type="checkbox"/>
+      </th>
+    <% else %>
+      <th></th>
+    <% end %>
+    <th><%= t "plg_mng_timesheets.date" %></th>
+    <th><%= t "plg_mng_timesheets.user" %></th>
+    <th><%= t "plg_mng_timesheets.activity" %></th>
+    <th><%= t "plg_mng_timesheets.issue" %></th>
+    <th><%= t "plg_mng_timesheets.comment" %></th>
+    <th><%= t "plg_mng_timesheets.hours" %></th>
+    <th><%= t "plg_mng_timesheets.reviewing_status" %></th>
+    <th><%= t "plg_mng_timesheets.reason" %></th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+<% spent_times.each do |entry| -%>
+  <tr class="time-entry <%= cycle("odd", "even") %> hascontextmenu">
+    <% if entry.reviewable_by?(User.current) %>
+      <td class="check-box-approve"><%= check_box_tag "ids[]", entry.id, false %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+    <td><%= entry.spent_on %></td>
+    <td><%= "#{entry.user.lastname} #{entry.user.firstname}" %></td>
+    <td><%= entry.activity.name if entry.activity.present? %></td>
+    <td><%= entry.issue.id if entry.issue.present? %></td>
+    <td><%= entry.comments %></td>
+    <td><%= entry.hours %></td>
+
+    <td>
+      <% if entry.review == "approved" %>
+        <%= image_tag "/images/true.png", :title => t("plg_mng_timesheets.approved") %>
+      <% elsif entry.review == "rejected" %>
+        <%= image_tag "/images/exclamation.png", :title => t("plg_mng_timesheets.rejected") %>
+      <% else %>
+        <%= image_tag "pending.png", :plugin => 'redmine_timesheet_management', :title => t("plg_mng_timesheets.not_reviewed") %>
+      <% end %>
+    </td>
+
+    <td><%= entry.reason if entry.reason.present? %></td>
+    <td class="buttons">
+      <% if entry.reviewable_by?(User.current) %>
+        <% if entry.review == "rejected" %>
+          <%= link_to t("plg_mng_timesheets.approve"), approve_project_spent_times_path(@project, entry: entry), :method => :get %>
+        <% elsif entry.review == "approved" %>
+
+        <% else %>
+            <%= link_to t("plg_mng_timesheets.approve"), approve_project_spent_times_path(@project, entry: entry), :method => :get %>|&nbsp;
+            <%= link_to t("plg_mng_timesheets.reject"), "#", data: {id: entry.id}, :class => "reject_time_sheet dialog_reject dialog_#{entry.id}" %>
+            <div class="dialog dialog_reject dialog_<%= entry.id %>" title="<%= t 'plg_mng_timesheets.reason' %>">
+              <textarea class="reason"></textarea>
+              <%= link_to reject_project_spent_times_path(@project, entry: entry), :method => :get, class: "link_to_reject" do %>
+                <button>Reject</button>
+              <% end %>
+            </div>
+        <% end %>
+      <% end %>
+
+      <% if entry.editable_by?(User.current) -%>
+          <%= link_to image_tag('edit.png'), edit_project_spent_time_path(@project, entry),
+                                             :title => l(:button_edit) %>
+          <%= link_to image_tag('delete.png'), project_spent_time_path(@project, entry),
+                                               :data => {:confirm => l(:text_are_you_sure)},
+                                               :method => :delete,
+                                               :title => l(:button_delete) %>
+      <% end -%>
+    </td>
+  </tr>
+<% end -%>
+</tbody>
+</table>
+
+<script type="text/javascript">
+  $(function() {
+    // this initializes the dialog (and uses some common options that I do)
+    $(".dialog").dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
+
+    // next add the onclick handler
+    $(".reject_time_sheet").click(function() {
+      var id = $(this).data("id");
+      var class_dialog = ".dialog.dialog_reject.dialog_" + id;
+      $(class_dialog).find("textarea").val("");
+      $(class_dialog).dialog("open");
+
+      $(document).on("change", class_dialog + " .reason", function(event){
+        var origina_url_reject = $(class_dialog).find(".link_to_reject").attr("href");
+        var reason = $(class_dialog).find("textarea").val();
+        var new_url_recject = origina_url_reject + "&reason=" + reason;
+        $(class_dialog).find("a").attr("href", new_url_recject);
+      });
+      return false;
+    });
+  });
+</script>

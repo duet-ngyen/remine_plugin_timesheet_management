@@ -1,0 +1,38 @@
+.reason{
+  width: 96%;
+  height: 50px;
+}
+
+#timesheet-management .check-box-approve{
+  padding-right: 0
+}
+
+#form-spent-time .label-text{
+  padding-left:25px;
+  padding-right: 10px;
+  width:125px;
+  text-align: right;
+  font-weight: bold;
+  display:inline-block
+}
+
+#form-spent-time .action{
+  margin-top: 10px;
+  width:125px;
+  text-align: right;
+  padding-left:25px;
+  padding-right: 10px;
+}
+
+.report-timesheets .value-report{
+  text-align: center;
+}
+
+.report-timesheets thead td{
+  width: 120px;
+  font-weight: bold;
+}
+
+.report-timesheets .total{
+  background-color: #EEEEEE
+}

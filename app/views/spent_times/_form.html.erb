@@ -1,0 +1,39 @@
+<%= form_for [@project, @spent_time] do |f| %>
+  <div id="form-spent-time">
+    <div>
+      <div class="label-text">
+        <%= f.label :spent_on, class: "label-date" %>
+        <span class="required"> *</span>
+      </div>
+
+      <%= f.text_field :spent_on, :size => 10, :required => true %><%= calendar_for('spent_time_spent_on') %>
+    </div>
+
+    <div class="">
+      <div class="label-text">
+        <span class="text-label"><%= f.label :hours %></span>
+        <span class="required"> *</span>
+      </div>
+      <%= f.text_field :hours, :size => 6, :required => true %>
+    </div>
+
+    <div class="form-group">
+      <div class="label-text">
+        <%= f.label :comments %>
+      </div>
+      <%= f.text_field :comments, size: 100 %>
+    </div>
+
+    <div>
+      <div class="label-text">
+        <%= f.label :activity_id %>
+        <span class="required"> *</span>
+      </div>
+      <%= f.select :activity_id, options_for_select(TimeEntryActivity.all.map(&:name), @spent_time.activity.name) , :required => true %>
+    </div>
+
+    <div class="action">
+      <%= f.submit t("plg_mng_timesheets.submit") %>
+    </div>
+  </div>
+<% end %>

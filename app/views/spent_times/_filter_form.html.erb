@@ -1,0 +1,37 @@
+<fieldset id="filters" class="<%= (params[:open_filter].present? && params[:open_filter] == true) ? "collapsible" : "collapsible collapsed" %>"">
+  <legend onclick="toggleFieldset(this);"><%= t "plg_mng_timesheets.filters" %></legend>
+  <div style="<%= (params[:open_filter].present? && params[:open_filter] == true) ? "" : "display: none;" %>" >
+    <%= form_tag project_spent_times_path(@project), method: :get do %>
+      <%= hidden_field_tag :open_filter, false, class: "open-filter" %>
+
+      <table class="filters-table">
+        <tr class="filter">
+          <td class="field"><%= label_tag :member_name %></td>
+          <td class="field"><%= text_field_tag :member_name, params[:member_name] %></td>
+        </tr>
+
+        <tr class="filter">
+          <td class="field"><%= label_tag :date_from %></td>
+          <td class="field"><%= text_field_tag :time_from, params[:time_from] %><%= calendar_for('time_from') %></td>
+          <td class=""> <%= label_tag :to %>&nbsp;</td>
+          <td class="field"><%= text_field_tag :time_to, params[:time_to] %><%= calendar_for('time_to') %></td>
+        </tr>
+
+        <tr class="filter">
+          <td class="field"><%= label_tag :review_status %></td>
+          <td class="field"><%= select_tag :review_status, options_for_select([
+              ['Approved', SpentTime.reviews[:approved]],
+              ['Rejected', SpentTime.reviews[:rejected]],
+              ['Not Reviewed', SpentTime.reviews[:not_reviewed]]
+            ], params[:review_status]), :prompt => t("plg_mng_timesheets.please_select") %>
+
+          </td>
+        </tr>
+        <tr class="filter">
+          <td class="field"></td>
+          <td class="field"><%= submit_tag t("plg_mng_timesheets.submit"), class: "filter" %></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</fieldset>

@@ -1,5 +1,5 @@
-Redmine::Plugin.register :redmine_timesheet_management do
-  name 'Manage Time Sheets plugin'
+Redmine::Plugin.register :redmine_plugin_timesheet_management do
+  name 'Redmine Timesheet Management plugin'
   author 'Duyet Nguyen'
   description 'This is a plugin for Redmine to manage timesheet'
   version '0.0.1'
